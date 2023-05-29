@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author     The S Group <support@sashas.org>
+  ~ @copyright  2023  Sashas IT Support Inc. (https://www.sashas.org)
+  ~ @license     http://opensource.org/licenses/GPL-3.0  GNU General Public License, version 3 (GPL-3.0)
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="TheSGroup\AlgoliaConfigSearch\Model\Config">
+        <arguments>
+            <argument name="engineList" xsi:type="array">
+                <item name="algolia" xsi:type="string">algolia</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Search\Model\Adminhtml\System\Config\Source\Engine">
+        <arguments>
+            <argument name="engines" xsi:type="array">
+                <item sortOrder="40" name="algolia" xsi:type="string">Algolia</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="TheSGroup\AlgoliaConfigSearch\Model\Client\AlgoliasearchFactory" type="Magento\AdvancedSearch\Model\Client\ClientFactory">
+        <arguments>
+            <argument name="clientClass" xsi:type="string">TheSGroup\AlgoliaConfigSearch\Model\Client\Algolia</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\AdvancedSearch\Model\Client\ClientResolver">
+        <arguments>
+            <argument name="clientFactories" xsi:type="array">
+                <item name="algolia" xsi:type="string">\TheSGroup\AlgoliaConfigSearch\Model\Client\AlgoliasearchFactory</item>
+            </argument>
+            <argument name="clientOptions" xsi:type="array">
+                <item name="algolia" xsi:type="string">\TheSGroup\AlgoliaConfigSearch\Model\Config</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\CatalogSearch\Model\Indexer\IndexerHandlerFactory">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="algolia" xsi:type="string">TheSGroup\AlgoliaConfigSearch\Model\Indexer\IndexerHandler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\CatalogSearch\Model\Indexer\IndexStructureFactory">
+        <arguments>
+            <argument name="structures" xsi:type="array">
+                <item name="algolia" xsi:type="string">TheSGroup\AlgoliaConfigSearch\Model\Indexer\IndexStructure</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\CatalogSearch\Model\ResourceModel\EngineProvider">
+        <arguments>
+            <argument name="engines" xsi:type="array">
+                <item name="algolia" xsi:type="string">TheSGroup\AlgoliaConfigSearch\Model\ResourceModel\Engine</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Search\Model\AdapterFactory">
+        <arguments>
+            <argument name="adapters" xsi:type="array">
+                <item name="algolia" xsi:type="string">TheSGroup\AlgoliaConfigSearch\SearchAdapter\Adapter</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Search\Model\EngineResolver">
+        <arguments>
+            <argument name="engines" xsi:type="array">
+                <item name="algolia" xsi:type="string">algolia</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Search\Dynamic\IntervalFactory">
+        <arguments>
+            <argument name="intervals" xsi:type="array">
+                <item name="algolia" xsi:type="string">TheSGroup\AlgoliaConfigSearch\SearchAdapter\Aggregation\Interval</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Search\Dynamic\DataProviderFactory">
+        <arguments>
+            <argument name="dataProviders" xsi:type="array">
+                <item name="algolia" xsi:type="string">TheSGroup\AlgoliaConfigSearch\SearchAdapter\Dynamic\DataProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Search\Model\Search\PageSizeProvider">
+        <arguments>
+            <argument name="pageSizeBySearchEngine" xsi:type="array">
+                <item name="algolia" xsi:type="number">10000</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="algoliasearchSearchCriteriaResolverFactory" type="Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection\SearchCriteriaResolverFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">TheSGroup\AlgoliaConfigSearch\Model\ResourceModel\Fulltext\Collection\SearchCriteriaResolver</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="algoliasearchSearchResultApplier\Factory" type="Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection\SearchResultApplierFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">TheSGroup\AlgoliaConfigSearch\Model\ResourceModel\Fulltext\Collection\SearchResultApplier</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="algoliasearchTotalRecordsResolver\Factory" type="Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection\TotalRecordsResolverFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">TheSGroup\AlgoliaConfigSearch\Model\ResourceModel\Fulltext\Collection\TotalRecordsResolver</argument>
+        </arguments>
+    </virtualType>
+    <!-- PLP -->
+    <virtualType name="algoliasearchAdvancedCollection" type="Magento\CatalogSearch\Model\ResourceModel\Advanced\Collection">
+        <arguments>
+            <argument name="searchRequestName" xsi:type="string">advanced_search_container</argument>
+            <argument name="searchCriteriaResolverFactory" xsi:type="object">algoliasearchSearchCriteriaResolverFactory</argument>
+            <argument name="searchResultApplierFactory" xsi:type="object">algoliasearchSearchResultApplier\Factory</argument>
+            <argument name="totalRecordsResolverFactory" xsi:type="object">algoliasearchTotalRecordsResolver\Factory</argument>
+            <argument name="defaultFilterStrategyApplyChecker" xsi:type="object">TheSGroup\AlgoliaConfigSearch\Model\ResourceModel\Fulltext\Collection\DefaultFilterStrategyApplyChecker</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="algoliasearchAdvancedCollectionFactory" type="Magento\CatalogSearch\Model\ResourceModel\Advanced\CollectionFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">algoliasearchAdvancedCollection</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\CatalogSearch\Model\Search\ItemCollectionProvider">
+        <arguments>
+            <argument name="factories" xsi:type="array">
+                <item name="algolia" xsi:type="object">algoliasearchAdvancedCollectionFactory</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="algoliasearchCategoryCollection" type="Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection">
+        <arguments>
+            <argument name="searchRequestName" xsi:type="string">catalog_view_container</argument>
+            <argument name="searchCriteriaResolverFactory" xsi:type="object">algoliasearchSearchCriteriaResolverFactory</argument>
+            <argument name="searchResultApplierFactory" xsi:type="object">algoliasearchSearchResultApplier\Factory</argument>
+            <argument name="totalRecordsResolverFactory" xsi:type="object">algoliasearchTotalRecordsResolver\Factory</argument>
+            <argument name="defaultFilterStrategyApplyChecker" xsi:type="object">TheSGroup\AlgoliaConfigSearch\Model\ResourceModel\Fulltext\Collection\DefaultFilterStrategyApplyChecker</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="algoliasearchCategoryCollectionFactory" type="Magento\CatalogSearch\Model\ResourceModel\Fulltext\SearchCollectionFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">algoliasearchCategoryCollection</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="elasticsearchLayerCategoryItemCollectionProvider" type="Magento\Elasticsearch\Model\Layer\Category\ItemCollectionProvider">
+        <arguments>
+            <argument name="factories" xsi:type="array">
+                <item name="algolia" xsi:type="object">algoliasearchCategoryCollectionFactory</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\CatalogSearch\Model\Advanced\ProductCollectionPrepareStrategyProvider">
+        <arguments>
+            <argument name="strategies" xsi:type="array">
+                <item name="algolia" xsi:type="object">TheSGroup\AlgoliaConfigSearch\Model\Advanced\ProductCollectionPrepareStrategy</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- end of PLP -->
+    <!-- CatalogSearch -->
+    <virtualType name="algoliasearchFulltextSearchCollection" type="Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection">
+        <arguments>
+            <argument name="searchRequestName" xsi:type="string">quick_search_container</argument>
+            <argument name="searchCriteriaResolverFactory" xsi:type="object">algoliasearchSearchCriteriaResolverFactory</argument>
+            <argument name="searchResultApplierFactory" xsi:type="object">algoliasearchSearchResultApplier\Factory</argument>
+            <argument name="totalRecordsResolverFactory" xsi:type="object">algoliasearchTotalRecordsResolver\Factory</argument>
+            <argument name="defaultFilterStrategyApplyChecker" xsi:type="object">TheSGroup\AlgoliaConfigSearch\Model\ResourceModel\Fulltext\Collection\DefaultFilterStrategyApplyChecker</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="algoliasearchFulltextSearchCollectionFactory" type="Magento\CatalogSearch\Model\ResourceModel\Fulltext\SearchCollectionFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">algoliasearchFulltextSearchCollection</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="elasticsearchLayerSearchItemCollectionProvider" type="Magento\Elasticsearch\Model\Layer\Search\ItemCollectionProvider">
+        <arguments>
+            <argument name="factories" xsi:type="array">
+                <item name="algolia" xsi:type="object">algoliasearchFulltextSearchCollectionFactory</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- end of CatalogSearch -->
+    <type name="Magento\Elasticsearch\Elasticsearch5\Model\Adapter\BatchDataMapper\CategoryFieldsProviderProxy">
+        <arguments>
+            <argument name="categoryFieldsProviders" xsi:type="array">
+                <item name="algolia" xsi:type="object">Magento\Elasticsearch\Elasticsearch5\Model\Adapter\BatchDataMapper\CategoryFieldsProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Elasticsearch\Elasticsearch5\Model\Adapter\FieldMapper\ProductFieldMapperProxy">
+        <arguments>
+            <argument name="productFieldMappers" xsi:type="array">
+                <item name="algolia" xsi:type="object">Magento\Elasticsearch7\Model\Adapter\FieldMapper\ProductFieldMapper</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- catalogsearch page todo change class -->
+    <type name="Magento\AdvancedSearch\Model\SuggestedQueries">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="algolia" xsi:type="string">Magento\Elasticsearch\Model\DataProvider\Suggestions</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- setup:upgrade -->
+    <type name="Magento\Search\Setup\CompositeInstallConfig">
+        <arguments>
+            <argument name="installConfigList" xsi:type="array">
+                <item name="algolia" xsi:type="object">TheSGroup\AlgoliaConfigSearch\Setup\InstallConfig</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Search\Model\SearchEngine\Validator">
+        <arguments>
+            <argument name="engineValidators" xsi:type="array">
+                <item name="algolia" xsi:type="object">TheSGroup\AlgoliaConfigSearch\Setup\Validator</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

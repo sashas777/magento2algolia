@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author     The S Group <support@sashas.org>
+  ~ @copyright  2023  Sashas IT Support Inc. (https://www.sashas.org)
+  ~ @license     http://opensource.org/licenses/GPL-3.0  GNU General Public License, version 3 (GPL-3.0)
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="catalog">
+            <group id="search">
+                <field id="algolia_test_connect_wizard" translate="button_label" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label/>
+                    <button_label>Test Connection</button_label>
+                    <frontend_model>TheSGroup\AlgoliaConfigSearch\Block\Adminhtml\System\Config\TestConnection</frontend_model>
+                    <depends>
+                        <field id="engine">algolia</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

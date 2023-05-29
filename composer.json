@@ -1,0 +1,22 @@
+{
+  "name": "thesgroup/module-algolia-config-search",
+  "version": "1.0.0",
+  "description": "N/A",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*",
+    "algolia/algoliasearch-magento-2": "3.10.*",
+    "magento/module-search": "101.1.*"
+  },
+  "license": [
+    "GNU General Public License (GPL)"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "TheSGroup\\AlgoliaConfigSearch\\": ""
+    }
+  }
+}
